@@ -8,14 +8,7 @@ import { transpileScriptForClient } from "../utils/transpile-script-for-client.t
 import { watch } from "../utils/watch.ts";
 
 const [inputFile] = Deno.args;
-const fullInputFilePath = path.join(Deno.cwd(), inputFile);
-
-console.log({
-  initial: inputFile,
-  cwd: Deno.cwd(),
-  fullInputFilePath,
-  resolved: import.meta.resolve(fullInputFilePath),
-});
+const fullInputFilePath = `file://${path.join(Deno.cwd(), inputFile)}`;
 
 router.get("/app.js", async (ctx) => {
   const { getProps } = await import(fullInputFilePath);
