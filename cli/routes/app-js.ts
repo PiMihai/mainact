@@ -11,7 +11,7 @@ const [inputFile] = Deno.args;
 const fullInputFilePath = `file://${path.join(Deno.cwd(), inputFile)}`;
 
 router.get("/app.js", async (ctx) => {
-  const { getProps } = await import(fullInputFilePath);
+  const { getProps } = await import(`file://${fullInputFilePath}`);
   const data = await getProps();
   const inputFileContents = Deno.readTextFileSync(fullInputFilePath);
   const clientScript = `
