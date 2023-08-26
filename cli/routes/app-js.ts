@@ -8,11 +8,12 @@ import { transpileScriptForClient } from "../utils/transpile-script-for-client.t
 import { watch } from "../utils/watch.ts";
 
 const [inputFile] = Deno.args;
+const fullInputFilePath = path.join(Deno.cwd(), inputFile);
 
 router.get("/app.js", async (ctx) => {
-  const { getProps } = await import(path.join(Deno.cwd(), inputFile));
+  const { getProps } = await import(fullInputFilePath);
   const data = await getProps();
-  const inputFileContents = Deno.readTextFileSync(inputFile);
+  const inputFileContents = Deno.readTextFileSync(fullInputFilePath);
   const clientScript = `
 		${wsClientScript}
 		${inputFileContents}
