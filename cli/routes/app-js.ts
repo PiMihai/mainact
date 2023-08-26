@@ -10,6 +10,13 @@ import { watch } from "../utils/watch.ts";
 const [inputFile] = Deno.args;
 const fullInputFilePath = path.join(Deno.cwd(), inputFile);
 
+console.log({
+  initial: inputFile,
+  cwd: Deno.cwd(),
+  fullInputFilePath,
+  resolved: import.meta.resolve(fullInputFilePath),
+});
+
 router.get("/app.js", async (ctx) => {
   const { getProps } = await import(fullInputFilePath);
   const data = await getProps();
