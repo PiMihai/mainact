@@ -22,8 +22,8 @@ $ deno uninstall mainact
 
 See `./example/example.tsx` for sample usage.
 
-To run :
+To run:
 
 ```
-$ mainact ./example/example.tsx
+$ mainact ./example/example.tsx --args '{ "inputFile": "./example/example.csv" }'
 ```

@@ -9,8 +9,7 @@ import React, { useEffect } from "https://esm.sh/react@18.2.0";
 import type { Request, Router } from "https://deno.land/x/oak@v12.6.0/mod.ts";
 
 export const getProps = (input: { inputFile: string }) => {
-  const dir = path.dirname(path.fromFileUrl(import.meta.url));
-  const data = readFileSync(`${dir}/${input.inputFile}`)
+  const data = readFileSync(input.inputFile)
     .parseCSV({ dynamicTyping: true })
     .toArray();
   return { data };
