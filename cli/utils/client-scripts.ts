@@ -6,6 +6,7 @@ export const wsClientScript = `
       console.info("[refresh] ", message);
     }
     const refresh = () => {
+      window.location.assign("/");
       window.location.reload();
     }
     const connect = (callback) => {

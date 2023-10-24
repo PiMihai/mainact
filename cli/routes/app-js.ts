@@ -1,30 +1,22 @@
 import * as path from "https://deno.land/std@0.200.0/path/mod.ts";
 import { router, sockets } from "../router.ts";
-import {
-  createReactRenderScript,
-  wsClientScript,
-} from "../utils/client-scripts.ts";
-import { transpileScriptForClient } from "../utils/transpile-script-for-client.ts";
 import { watch } from "../utils/watch.ts";
+import { renderFile } from "../utils/render-file.ts";
+import { args } from "../args.ts";
 
-const [inputFile] = Deno.args;
-const fullInputFilePath = path.join(Deno.cwd(), inputFile);
+const {
+  _: [inputFile],
+} = args;
+const fullInputFilePath = path.join(Deno.cwd(), inputFile.toString());
 
 router.get("/app.js", async (ctx) => {
-  const { getProps } = await import(`file://${fullInputFilePath}`);
-  const data = await getProps();
-  const inputFileContents = Deno.readTextFileSync(fullInputFilePath);
-  const clientScript = `
-		${wsClientScript}
-		${inputFileContents}
-		${createReactRenderScript(data)}
-	  `;
-  const transpiledClientScript = transpileScriptForClient(clientScript);
+  const transpiledClientScript = await renderFile(fullInputFilePath);
   ctx.response.type = "text/javascript";
   ctx.response.body = transpiledClientScript;
 });
 
-watch(inputFile, () => {
+watch(fullInputFilePath, () => {
+  console.log("Code changed, triggering refresh...");
   sockets.forEach((socket) => {
     socket.send("refresh");
   });

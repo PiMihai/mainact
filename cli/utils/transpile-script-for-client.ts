@@ -13,7 +13,8 @@ export const transpileScriptForClient = (script: string) => {
         e.declaration.type == "VariableDeclaration" &&
         e.declaration.declarations[0].type == "VariableDeclarator" &&
         e.declaration.declarations[0].id.type == "Identifier" &&
-        e.declaration.declarations[0].id.value == "getProps"
+        (e.declaration.declarations[0].id.value == "getProps" ||
+          e.declaration.declarations[0].id.value == "extendBackend")
       )
   );
 
